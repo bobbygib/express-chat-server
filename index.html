@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script
+  src="https://code.jquery.com/jquery-3.1.1.js"
+  integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+	<input type="text" id="input">
+	<button id="send">Send</button>
+	<div id="output"></div>
+	<script>
+
+		function getMessages(){
+			$.get("http://localhost:8080/chat", function(res){
+				// res ---> '["chats cleared", "a", "b"]'
+				var msgs = JSON.parse(res);
+				// msgs = ["chats cleared", "a", "b"]
+				$('#output').empty();
+				for (msg of msgs) {
+					var newPara = $('<p></p>');
+					newPara.text(msg); // text, not HTML
+					$('#output').append(newPara);
+				}
+			})
+		}
+
+		function sendMessage(){
+			var msg = $('#input').val();
+			$('#input').val(""); // empty string -> clear input
+			$.post("http://localhost:8080/chat", {
+				message: msg
+			}, function(res) {
+				getMessages();
+			});
+		}
+
+		$('#send').click(sendMessage);
+
+		$('#input').keyup(function(event) {
+			if (event.keyCode === 13) {
+				// 13 is "enter" / "return"
+				sendMessage();
+			}
+		});
+
+		$(document).ready(function(){
+			getMessages();
+
+			setInterval(getMessages, 1000);
+		})
+
+	</script>
+</body>
+</html>

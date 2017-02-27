@@ -9,36 +9,42 @@
   crossorigin="anonymous"></script>
 </head>
 <body>
-	<input type="text" id="input">
+	username :<input type="text" id="inputName">
+	chat: <input type="text" id="input">
 	<button id="send">Send</button>
 	<div id="output"></div>
 	<script>
-
 		function getMessages(){
 			$.get("http://localhost:8080/chat", function(res){
-				// res ---> '["chats cleared", "a", "b"]'
+				// res ---> '[{text: hi, user: bobby, date: 192302138}]'
 				var msgs = JSON.parse(res);
 				// msgs = ["chats cleared", "a", "b"]
 				$('#output').empty();
 				for (msg of msgs) {
 					var newPara = $('<p></p>');
-					newPara.text(msg); // text, not HTML
+					newPara.text(msg.user + "(" + msg.date + ")" + ": " + msg.text) // text, not HTML
 					$('#output').append(newPara);
 				}
 			})
 		}
 
 		function sendMessage(){
-			var msg = $('#input').val();
+			var text = $('#input').val();
+			var user = $('#inputName').val();
 			$('#input').val(""); // empty string -> clear input
-			$.post("http://localhost:8080/chat", {
-				message: msg
+			$.post("/chat", {
+				message: {
+				text: text,
+				user: user,
+				date: Date()
+				}
 			}, function(res) {
 				getMessages();
-			});
+				});
 		}
 
 		$('#send').click(sendMessage);
+		
 
 		$('#input').keyup(function(event) {
 			if (event.keyCode === 13) {

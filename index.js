@@ -1,16 +1,16 @@
- var express = require("express")
+var express = require("express")
 
- var app = express()
+var app = express()
 
- //set up req.body
- // do the actual data stream collection into an object
- var bodyParser = require("body-parser");
- app.use(bodyParser.json())
- app.use(bodyParser.urlencoded({
- 	extended: true
- }));
+//set up req.body
+// do the actual data stream collection into an object
+var bodyParser = require("body-parser");
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
 
- var messages = [];
+var messages = [];
 
 app.get("/", function(req, res){
 	//__dirname is to get the whole current drectory name
@@ -31,12 +31,24 @@ app.post("/chat", function(req, res){
 	} else {
 		res.send("error erro err er e _")
 	}
-})
+});
+
+//individual messages
+app.get('/person/:name', function(req, res){
+	var pName  = req.params.name;
+	var nArr = [];
+	for (var i = 0; i < messages.length; i++){
+		if (messages[i].name === pName){
+			nArr.push(messages[i].msg)
+		}
+	} 
+	res.send(JSON.stringify(nArr));
+});
 
 app.use(function(req, res, next){
 	res.status(404)
 	res.send("404 File not found")
-})
+});
 
 app.use(function(err, req, res, next){
 	console.log(err)

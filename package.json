@@ -1,7 +1,6 @@
 {
   "name": "express-chat-server",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +9,17 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.16.1",
-    "express": "^4.14.1"
-  }
+    "express": "^4.14.1",
+    "mongodb": "^2.2.24"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bobbygib/express-chat-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bobbygib/express-chat-server/issues"
+  },
+  "homepage": "https://github.com/bobbygib/express-chat-server#readme",
+  "description": ""
 }

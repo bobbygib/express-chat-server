@@ -38,8 +38,10 @@
 				user: user,
 				date: Date()
 				}
-			}, function(res) {
-				getMessages();
+			},function(res) {
+				res = JSON.parse(res)
+				  if (res.message ==="success");
+				  document.location = "/chat/" + res.id
 				});
 		}
 
